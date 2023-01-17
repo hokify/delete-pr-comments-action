@@ -4,6 +4,10 @@ import * as github from '@actions/github'
 async function run(): Promise<void> {
   try {
     const pullNumber = github.context.issue.number
+
+    // eslint-disable-next-line no-console
+    console.log('el pull number es: ', pullNumber)
+
     if (!pullNumber) {
       core.warning('Cannot find the PR id.')
       return
@@ -32,6 +36,12 @@ async function run(): Promise<void> {
       .filter((id): id is number => !!id)
     const commentIdsWithReplySet = new Set(commentIdsWithReply)
 
+    // eslint-disable-next-line no-console
+    console.log(
+      'el resultado comment: ',
+      JSON.stringify(response.data, null, 6)
+    )
+
     const comments = response.data.filter(comment => {
       if (bodyContains.length > 0 && !comment.body?.includes(bodyContains)) {
         return false
@@ -43,6 +53,9 @@ async function run(): Promise<void> {
 
       return true
     })
+
+    // eslint-disable-next-line no-console
+    console.log('el comentario final: ', JSON.stringify(comments, null, 6))
     core.debug(`Found ${comments.length} comments with match conditions.`)
 
     for (const comment of comments) {
