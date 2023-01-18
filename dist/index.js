@@ -55,6 +55,10 @@ function run() {
             const bodyContains = core.getInput('bodyContains');
             const noReply = core.getInput('noReply');
             core.debug(`bodyContains: ${JSON.stringify(bodyContains)}`);
+            // eslint-disable-next-line no-console
+            console.log('el repo owner: ', github.context.repo.owner);
+            // eslint-disable-next-line no-console
+            console.log('el repo repo: ', github.context.repo.repo);
             const octokit = github.getOctokit(token);
             const response = yield octokit.rest.pulls.listReviewComments({
                 owner: github.context.repo.owner,
@@ -64,6 +68,8 @@ function run() {
                 sort: 'created',
                 direction: 'desc'
             });
+            // eslint-disable-next-line no-console
+            console.log('el octokit response: ', JSON.stringify(response, null, 6));
             core.debug(`Comment count: ${response.data.length}`);
             core.debug(`Comments: ${JSON.stringify(response.data)}`);
             const commentIdsWithReply = response.data
